@@ -1,17 +1,20 @@
 using GymManagementSystem.BLL.Helpers;
 using GymManagementSystem.BLL.Services.Classes;
 using GymManagementSystem.BLL.Services.Interfaces;
+using GymManagementSystem.DAL.Data.DataSeed;
 using GymManagementSystem.DAL.Data.DbContexts;
 using GymManagementSystem.DAL.Repositories.Classes;
 using GymManagementSystem.DAL.Repositories.Interfaces;
+using GymManagementSystem.PL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace GymManagementSystemProject
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +39,8 @@ namespace GymManagementSystemProject
             });
 
             var app = builder.Build();
+
+            await app.MigrateAndSeedAsync();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
