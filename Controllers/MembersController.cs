@@ -75,11 +75,11 @@ namespace GymManagementSystem.PL.Controllers
             var result = await _memberService.CreateMembersAsync(model, ct: ct);
             if(result)
             {
-                TempData["SuccessMessange"] = "Member Created Successfully";
+                TempData["SuccessMessage"] = "Member Created Successfully";
             }
             else
             {
-                TempData["ErrorMessange"] = "Failed To Created Member";
+                TempData["ErrorMessage"] = "Failed To Create Member";
             }
             return RedirectToAction(nameof(Index));
         }
