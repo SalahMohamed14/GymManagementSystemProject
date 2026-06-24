@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -30,36 +34,79 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav m-auto mb-2 mb-lg-0 mt-3 mt-lg-0">
+
                         <li class="nav-item">
-                        <li class="nav-item">
-                            <a class="nav-link active px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Home</a>
+                            <a asp-controller="Home"
+                               asp-action="Index"
+                               class="nav-link px-3 py-2 mx-2 fw-bolder fs-5 @(currentController == "Home" ? "Active" : "text-black-alternative")">
+                                Home
+                            </a>
                         </li>
+                        
+                        @if(User.IsInRole("SuperAdmin"))
+                        {   
+                            <li class="nav-item">
+                                <a asp-controller="Members"
+                                   asp-action="Index"
+                                   class="nav-link px-3 py-2 mx-2 fw-bolder fs-5 @(currentController == "Members" ? "Active" : "text-black-alternative")">
+                                    Members
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Trainers"
+                                asp-action="Index"
+                                class="nav-link px-3 py-2 mx-2 fw-bolder fs-5 @(currentController == "Trainers" ? "Active" : "text-black-alternative")">
+                                    Trainers
+                                </a>
+                            </li>
+                        }
+
                         <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Members</a>
+                            <a asp-controller="Sessions"
+                               asp-action="Index"
+                               class="nav-link px-3 py-2 mx-2 fw-bolder fs-5 @(currentController == "Sessions" ? "Active" : "text-black-alternative")">
+                                Sessions
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Trainers</a>
+                            <a asp-controller="Plans"
+                               asp-action="Index"
+                               class="nav-link px-3 py-2 mx-2 fw-bolder fs-5 @(currentController == "Plans" ? "Active" : "text-black-alternative")">
+                                Plans
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Sessions</a>
+                            <a asp-controller="Memberships"
+                               asp-action="Index"
+                               class="nav-link px-3 py-2 mx-2 fw-bolder fs-5 @(currentController == "Memberships" ? "Active" : "text-black-alternative")">
+                                Memberships
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Plans</a>
+                            <a asp-controller="SessionSchedules"
+                               asp-action="Index"
+                               class="nav-link px-3 py-2 mx-2 fw-bolder fs-5 @(currentController == "SessionSchedules" ? "Active" : "text-black-alternative")">
+                                Sessions Schedule
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Memberships</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Sessions Schedule</a>
-                        </li>
+
                         <li class="nav-item">
                             <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
                                 <button type="submit"
                                         class="btn btn-link nav-link px-3 py-2 mx-2 fw-bolder fs-5 text-black-alternative">
                                     Logout
                                 </button>
                             </form>
                         </li>
+
                     </ul>
                 </div>
             </div>
@@ -72,11 +119,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+  @*   <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - GymManagementSystemProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

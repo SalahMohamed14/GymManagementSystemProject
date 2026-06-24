@@ -1,0 +1,160 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+    Layout = null;
+}
+
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<style>
+    body {
+        background-color: #f4f6fb;
+    }
+
+    .access-wrapper {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+    }
+
+    .access-card {
+        background: #fff;
+        border-radius: 30px;
+        box-shadow: 0 15px 40px rgba(0,0,0,.08);
+        max-width: 1100px;
+        width: 100%;
+        padding: 60px;
+    }
+
+    .error-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .access-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+        .access-title span {
+            color: #3657ff;
+        }
+
+    .error-code {
+        display: inline-block;
+        background: #f1f3f7;
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-size: 14px;
+        margin: 20px 0;
+    }
+
+    .home-btn {
+        background: #3657ff;
+        color: white !important;
+        border-radius: 12px;
+        padding: 12px 35px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+        .home-btn:hover {
+            background: #2443df;
+            transform: translateY(-2px);
+        }
+
+    .lock-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .lock-circle {
+        width: 280px;
+        height: 280px;
+        background: #eef3ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lock-emoji {
+        font-size: 120px;
+    }
+
+    @@media (max-width: 768px) {
+        .access-card {
+            padding: 30px;
+        }
+
+        .access-title {
+            font-size: 2rem;
+        }
+
+        .lock-circle {
+            width: 180px;
+            height: 180px;
+            margin-top: 30px;
+        }
+
+        .lock-emoji {
+            font-size: 80px;
+        }
+    }
+</style>
+
+<div class="access-wrapper">
+    <div class="access-card">
+        <div class="row align-items-center">
+
+            <div class="col-lg-7">
+
+                <div class="error-icon">🚫</div>
+
+                <h1 class="access-title">
+                    Access <span>Denied</span>
+                </h1>
+
+                <p class="text-muted fs-5">
+                    We're sorry, but you don't have permission to access this resource.
+                    Your current user role or membership status doesn't grant you access
+                    to this section.
+                </p>
+
+                <div class="error-code">
+                    <strong>Error Code:</strong> AUTH_FORBIDDEN_ACCESS
+                </div>
+
+                <p class="text-muted mt-3">
+                    If you believe this is an error or need elevated permissions,
+                    please contact the system administrator or your membership
+                    manager for assistance.
+                </p>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="home-btn">
+                    Return to Home
+                </a>
+
+            </div>
+
+            <div class="col-lg-5">
+                <div class="lock-container">
+                    <div class="lock-circle">
+                        <div class="lock-emoji">🔒</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

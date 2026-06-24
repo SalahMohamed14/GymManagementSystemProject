@@ -1,11 +1,14 @@
 using GymManagementSystem.BLL.Helpers;
+using GymManagementSystem.BLL.Services.AttachmentService;
 using GymManagementSystem.BLL.Services.Classes;
 using GymManagementSystem.BLL.Services.Interfaces;
 using GymManagementSystem.DAL.Data.DataSeed;
 using GymManagementSystem.DAL.Data.DbContexts;
+using GymManagementSystem.DAL.Data.Models;
 using GymManagementSystem.DAL.Repositories.Classes;
 using GymManagementSystem.DAL.Repositories.Interfaces;
 using GymManagementSystem.PL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
@@ -28,10 +31,27 @@ namespace GymManagementSystemProject
             builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
             //builder.Services.AddScoped<IPlanRepository, PlanRepository>();      // Create one object per request
             //builder.Services.AddTransient<IPlanRepository, PlanRepository>(); // Create new object per request 
             //builder.Services.AddSingleton<IPlanRepository, PlanRepository>(); // Create one object only
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                //config.Password.RequiredLength = 6;
+
+                config.User.RequireUniqueEmail = true;
+
+                config.Lockout.MaxFailedAccessAttempts = 5;
+                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);    
+            }).AddEntityFrameworkStores<GymDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(opt =>
+            {
+                opt.LoginPath = "/Account/Login";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             builder.Services.AddDbContext<GymDbContext>(Options => 
             {
@@ -53,12 +73,13 @@ namespace GymManagementSystemProject
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Account}/{action=Login}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

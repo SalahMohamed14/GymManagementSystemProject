@@ -1,19 +1,25 @@
-﻿using GymManagementSystem.BLL.Services.Classes;
+﻿using GymManagementSystem.BLL.Services.AttachmentService;
+using GymManagementSystem.BLL.Services.Classes;
 using GymManagementSystem.BLL.Services.Interfaces;
 using GymManagementSystem.BLL.ViewModels.MemberViewModel;
 using GymManagementSystem.DAL.Data.Models;
 using GymManagementSystem.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace GymManagementSystem.PL.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class MembersController : Controller
     {
         private readonly IMemberService _memberService;
-        public MembersController(IMemberService memberService)
+        private readonly IAttachmentService _attachmentService;
+
+        public MembersController(IMemberService memberService, IAttachmentService attachmentService)
         {
             _memberService = memberService;
+            _attachmentService = attachmentService;
         }
 
         #region Base Actions
@@ -152,5 +158,18 @@ namespace GymManagementSystem.PL.Controllers
             return RedirectToAction(nameof(Index)); 
         }
         #endregion
+
+        public async Task<IActionResult> Picture(int id)
+        {
+            var member = await _memberService.GetMemberDetailsAsync(id);
+            if (member is null || string.IsNullOrEmpty(member.Photo))
+                return NotFound();
+
+            var result = _attachmentService.GetFile(member.Photo, "MembersPctures");
+            if(result is null)
+                return NotFound();
+
+            return File(result.Value.Stream, result.Value.CntentType);
+        }
     }
 }
